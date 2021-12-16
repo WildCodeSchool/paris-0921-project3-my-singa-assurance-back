@@ -21,7 +21,7 @@ const postOne = async (req, res) => {
 const updateOne = async (req, res) => {
   try {
     const result = await updateSubscribors(req.body, req.params.id);
-    res.status(200).json(...result);
+    res.status(200).json(result);
   } catch (err) {
     res.status(500).send('Internal server error');
   }

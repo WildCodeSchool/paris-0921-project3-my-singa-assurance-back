@@ -18,12 +18,11 @@ const createSubscribors = async (body) => {
 
 const updateSubscribors = async (body, id) => {
   const result = await prisma.subscribor.update({
-    where: { id: Number(id) },
+    where: { Subscribor_id: Number(id) },
     data: {
       ...body,
     },
   });
-  console.log(result);
   return result;
 };
 
