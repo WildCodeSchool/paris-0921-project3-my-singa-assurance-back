@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { router } = require('./route');
 const { SERVER_PORT } = require('./env');
 
 const app = express();
@@ -7,6 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+router(app);
 
 const server = app.listen(SERVER_PORT, () => {
   console.log(`Server is listening on : ${SERVER_PORT}`);
