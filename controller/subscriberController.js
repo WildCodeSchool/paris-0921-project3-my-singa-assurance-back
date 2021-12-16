@@ -1,8 +1,17 @@
-const { subscribors, createSubscribors, updateSubscribors } = require('../model/subscriberModel');
+const { getAllSubscribors, getOneSubscriborById, createSubscribors, updateSubscribors, deleteSubscribors } = require('../model/subscriberModel');
 
 const getMany = async (req, res) => {
   try {
-    const result = await subscribors();
+    const result = await getAllSubscribors();
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send('Internal server error');
+  }
+};
+
+const getOneById = async (req, res) => {
+  try {
+    const result = await getOneSubscriborById(req.params.id);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).send('Internal server error');
@@ -27,8 +36,19 @@ const updateOne = async (req, res) => {
   }
 };
 
+const deleteOne = async (req, res) => {
+  try {
+    await deleteSubscribors(req.params.id);
+    res.status(204).send('Subscriber deleted');
+  } catch (err) {
+    res.status(500).send('Internal server error');
+  }
+};
+
 module.exports = {
   getMany,
+  getOneById,
   postOne,
   updateOne,
+  deleteOne,
 };
