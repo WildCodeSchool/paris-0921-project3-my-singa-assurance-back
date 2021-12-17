@@ -62,17 +62,17 @@ model recipient_has_formule {
 
 model subscribor {
   Subscribor_id          Int                      @id @unique(map: "Subscribor_id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
-  email                  String                   @unique(map: "email_UNIQUE") @db.VarChar(45)
-  first_name             String                   @db.VarChar(45)
-  last_name              String                   @db.VarChar(45)
+  email                  String                   @unique(map: "email_UNIQUE") @db.VarChar(255)
+  first_name             String                   @db.VarChar(255)
+  last_name              String                   @db.VarChar(255)
   birth_date             DateTime                 @db.Date
-  living_country         String                   @db.VarChar(45)
-  nationality            String                   @db.VarChar(45)
-  address                String                   @db.VarChar(45)
+  living_country         String                   @db.VarChar(255)
+  nationality            String                   @db.VarChar(255)
+  address                String                   @db.VarChar(255)
   Postal_code            Int                      @db.UnsignedInt
-  City                   String                   @db.VarChar(45)
-  phone_number           Int                      @unique(map: "phone_number_UNIQUE") @db.UnsignedInt
-  marital_status         String?                  @db.VarChar(45)
+  City                   String                   @db.VarChar(255)
+  phone_number           String                   @db.VarChar(45)
+  marital_status         String?                  @db.VarChar(255)
   create_date            DateTime                 @db.DateTime(0)
   last_update            DateTime                 @db.DateTime(0)
   formule_has_subscribor formule_has_subscribor[]
