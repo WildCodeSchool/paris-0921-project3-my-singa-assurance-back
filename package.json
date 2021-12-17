@@ -17,11 +17,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "@prisma/client": "^3.6.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "husky": "^6.0.0",
+    "joi": "^17.5.0",
     "lint-staged": "^11.0.0",
     "mysql2": "^2.2.5"
   },
