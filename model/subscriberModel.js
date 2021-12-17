@@ -1,6 +1,26 @@
 const { PrismaClient } = require('@prisma/client');
+const Joi = require('joi').extend(require('@joi/date'));
 
 const prisma = new PrismaClient();
+
+const validate = (data, forCreation = true) => {
+  const presence = forCreation ? 'required' : 'optional';
+  return Joi.object({
+    email: Joi.string().email().max(255).presence(presence),
+    first_name: Joi.string().max(255).presence(presence),
+    last_name: Joi.string().max(255).presence(presence),
+    birth_date: Joi.date().format('YYYY-MM-DD').presence(presence),
+    living_country: Joi.string().max(255).presence(presence),
+    nationality: Joi.string().max(255).presence(presence),
+    address: Joi.string().max(255).presence(presence),
+    Postal_code: Joi.number().integer().presence(presence),
+    City: Joi.string().max(255).presence(presence),
+    phone_number: Joi.string()
+      .regex(/^[0-9]{10}$/)
+      .presence(presence),
+    marital_status: Joi.string().max(255).presence(presence),
+  }).validate(data, { abortEarly: false }).error;
+};
 
 const getAllSubscribors = async () => {
   const allSubscribers = await prisma.subscribor.findMany();
@@ -58,4 +78,5 @@ module.exports = {
   createSubscribors,
   updateSubscribors,
   deleteSubscribors,
+  validate,
 };
