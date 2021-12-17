@@ -1,4 +1,11 @@
-const { getAllSubscribors, getOneSubscriborById, createSubscribors, updateSubscribors, deleteSubscribors } = require('../model/subscriberModel');
+const {
+  getAllSubscribors,
+  getOneSubscriborById,
+  createSubscribors,
+  updateSubscribors,
+  deleteSubscribors,
+  validate,
+} = require('../model/subscriberModel');
 
 const getMany = async (req, res) => {
   try {
@@ -20,9 +27,15 @@ const getOneById = async (req, res) => {
 
 const postOne = async (req, res) => {
   try {
+    const validatingError = validate(req.body);
+    if (validatingError) {
+      console.log(validatingError);
+      return res.status(401).send('Invalid input');
+    }
     const result = await createSubscribors(req.body);
     res.status(201).json(result);
   } catch (err) {
+    console.log(err);
     res.status(500).send('Internal server error');
   }
 };
