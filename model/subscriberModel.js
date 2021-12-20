@@ -9,16 +9,19 @@ const validate = (data, forCreation = true) => {
     email: Joi.string().email().max(255).presence(presence),
     first_name: Joi.string().max(255).presence(presence),
     last_name: Joi.string().max(255).presence(presence),
-    birth_date: Joi.date().format('YYYY-MM-DD').presence(presence),
+    birth_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').raw().presence(presence),
     living_country: Joi.string().max(255).presence(presence),
     nationality: Joi.string().max(255).presence(presence),
     address: Joi.string().max(255).presence(presence),
     Postal_code: Joi.number().integer().presence(presence),
     City: Joi.string().max(255).presence(presence),
     phone_number: Joi.string()
-      .regex(/^[0-9]{10}$/)
+      .length(10)
+      .pattern(/^[0-9]+$/)
       .presence(presence),
     marital_status: Joi.string().max(255).presence(presence),
+    create_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').presence(presence),
+    last_update: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').presence(presence),
   }).validate(data, { abortEarly: false }).error;
 };
 

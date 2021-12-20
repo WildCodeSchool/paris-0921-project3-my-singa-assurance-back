@@ -65,7 +65,7 @@ model subscribor {
   email                  String                   @unique(map: "email_UNIQUE") @db.VarChar(255)
   first_name             String                   @db.VarChar(255)
   last_name              String                   @db.VarChar(255)
-  birth_date             DateTime                 @db.Date
+  birth_date             DateTime?                @db.Date
   living_country         String                   @db.VarChar(255)
   nationality            String                   @db.VarChar(255)
   address                String                   @db.VarChar(255)
