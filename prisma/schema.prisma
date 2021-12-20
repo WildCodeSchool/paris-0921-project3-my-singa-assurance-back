@@ -28,21 +28,25 @@ model formule_has_subscribor {
 
 model recipient {
   recipient_id               Int                     @id @unique(map: "recipient_id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
-  first_name                 String                  @db.VarChar(45)
-  last_name                  String                  @db.VarChar(45)
-  living_country             String                  @db.VarChar(45)
-  nationality                String                  @db.VarChar(45)
-  Subscribor_family_relation String                  @db.VarChar(45)
+  first_name                 String                  @db.VarChar(255)
+  last_name                  String                  @db.VarChar(255)
+  living_country             String                  @db.VarChar(255)
+  nationality                String                  @db.VarChar(255)
+  Subscribor_family_relation String                  @db.VarChar(255)
   phone_number               Int                     @unique(map: "phone_number_UNIQUE") @db.UnsignedInt
-  marital_status             String                  @db.VarChar(45)
+  marital_status             String                  @db.VarChar(255)
   birth_date                 DateTime                @db.Date
   Sex                        String                  @db.VarChar(15)
-  email                      String                  @unique(map: "email_UNIQUE") @db.VarChar(45)
+  email                      String                  @unique(map: "email_UNIQUE") @db.VarChar(255)
   create_date                DateTime                @db.DateTime(0)
   last_update                DateTime                @db.DateTime(0)
   subscribor_Subscribor_id   Int                     @db.UnsignedInt
   active                     Int?                    @db.TinyInt
-  recipient_qualification    String                  @db.VarChar(45)
+  recipient_qualification    String                  @db.VarChar(255)
+  password                   String?                 @db.VarChar(255)
+  address                    String                  @db.VarChar(255)
+  Postal_code                Int                     @db.UnsignedInt
+  City                       String                  @db.VarChar(255)
   subscribor                 subscribor              @relation(fields: [subscribor_Subscribor_id], references: [Subscribor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_recipient_subscribor")
   recipient_has_formule      recipient_has_formule[]
 
