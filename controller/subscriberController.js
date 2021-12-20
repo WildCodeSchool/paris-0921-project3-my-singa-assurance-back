@@ -1,11 +1,13 @@
 const {
   getAllSubscribors,
   getOneSubscriborById,
+  getOneSubscriborByEmail,
   createSubscribors,
   updateSubscribors,
   deleteSubscribors,
   validate,
 } = require('../model/subscriberModel');
+const { UnAuthorizedError } = require('../error-types');
 
 const getMany = async (req, res) => {
   try {
@@ -27,10 +29,10 @@ const getOneById = async (req, res) => {
 
 const postOne = async (req, res) => {
   try {
-    const validatingError = validate(req.body);
-    if (validatingError) {
-      console.log(validatingError);
-      return res.status(401).send('Invalid input');
+    if (validate(req.body)) throw new UnAuthorizedError();
+    const existingEmail = await getOneSubscriborByEmail(req.body.email);
+    if (existingEmail) {
+      return res.status(409).send('Email already used');
     }
     const result = await createSubscribors(req.body);
     res.status(201).json(result);
