@@ -1,7 +1,17 @@
 const { PrismaClient } = require('@prisma/client');
 const Joi = require('joi').extend(require('@joi/date'));
+const argon = require('argon2');
 
 const prisma = new PrismaClient();
+
+const hashPassword = async (password) => {
+  try {
+    const hashedPassword = await argon.hash(password);
+    return hashedPassword;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
 
 const validate = (data, forCreation = true) => {
   const presence = forCreation ? 'required' : 'optional';
@@ -22,6 +32,7 @@ const validate = (data, forCreation = true) => {
     marital_status: Joi.string().max(255).presence(presence),
     create_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').presence(presence),
     last_update: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').presence(presence),
+    password: Joi.string().min(8).max(255).presence(presence),
   }).validate(data, { abortEarly: false }).error;
 };
 
@@ -49,6 +60,7 @@ const getOneSubscriborByEmail = async (email) => {
 };
 
 const createSubscribors = async (body) => {
+  body.password = await hashPassword(body.password);
   const result = await prisma.subscribor.create({
     data: {
       ...body,
@@ -76,8 +88,8 @@ const deleteSubscribors = async (id) => {
 
 module.exports = {
   getAllSubscribors,
-  getOneSubscriborById,
   getOneSubscriborByEmail,
+  getOneSubscriborById,
   createSubscribors,
   updateSubscribors,
   deleteSubscribors,
