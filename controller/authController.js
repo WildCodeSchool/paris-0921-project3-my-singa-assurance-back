@@ -1,6 +1,7 @@
 const argon = require('argon2');
 const jwt = require('jsonwebtoken');
 
+const { UnAuthorizedError } = require('../error-types');
 const { getOneSubscriborByEmail } = require('../model/subscriberModel');
 
 const logIn = async (req, res) => {
@@ -10,7 +11,7 @@ const logIn = async (req, res) => {
     const token = createToken(user);
     res.status(200).json(token);
   } else {
-    throw new Error();
+    throw new UnAuthorizedError();
   }
 };
 

@@ -7,57 +7,38 @@ const {
   deleteSubscribors,
   validate,
 } = require('../model/subscriberModel');
-const { UnAuthorizedError } = require('../error-types');
+
+const { UnAuthorizedError, ConflictError } = require('../error-types');
 
 const getMany = async (req, res) => {
-  try {
-    const result = await getAllSubscribors();
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send('Internal server error');
-  }
+  const result = await getAllSubscribors();
+  res.status(200).json(result);
 };
 
 const getOneById = async (req, res) => {
-  try {
-    const result = await getOneSubscriborById(req.params.id);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send('Internal server error');
-  }
+  const result = await getOneSubscriborById(req.params.id);
+  res.status(200).json(result);
 };
 
 const postOne = async (req, res) => {
-  try {
-    if (validate(req.body)) throw new UnAuthorizedError();
-    const existingEmail = await getOneSubscriborByEmail(req.body.email);
-    if (existingEmail) {
-      return res.status(409).send('Email already used');
-    }
-    const result = await createSubscribors(req.body);
-    res.status(201).json(result);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('Internal server error');
-  }
+  const validatingError = validate(req.body);
+  if (validatingError) throw new UnAuthorizedError();
+
+  const existingEmail = await getOneSubscriborByEmail(req.body.email);
+  if (existingEmail) throw new ConflictError();
+
+  const result = await createSubscribors(req.body);
+  res.status(201).json(result);
 };
 
 const updateOne = async (req, res) => {
-  try {
-    const result = await updateSubscribors(req.body, req.params.id);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send('Internal server error');
-  }
+  const result = await updateSubscribors(req.body, req.params.id);
+  res.status(200).json(result);
 };
 
 const deleteOne = async (req, res) => {
-  try {
-    await deleteSubscribors(req.params.id);
-    res.status(204).send('Subscriber deleted');
-  } catch (err) {
-    res.status(500).send('Internal server error');
-  }
+  await deleteSubscribors(req.params.id);
+  res.status(204).send('Subscriber deleted');
 };
 
 module.exports = {
