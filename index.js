@@ -1,12 +1,27 @@
 const express = require('express');
 const cors = require('cors');
+const { router } = require('./route');
 const { SERVER_PORT } = require('./env');
+
+const handleRecordNotFound = require('./middleware/handleRecordNotFound');
+const handleBadRequest = require('./middleware/handleBadRequest');
+const handleUnAuthorized = require('./middleware/handleUnAuthorized');
+const handleInternalError = require('./middleware/handleInternalError');
+const handleConflict = require('./middleware/handleConflict');
 
 const app = express();
 
-app.use(cors());
+app.use(cors('*'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+router(app);
+
+app.use(handleBadRequest);
+app.use(handleRecordNotFound);
+app.use(handleUnAuthorized);
+app.use(handleInternalError);
+app.use(handleConflict);
 
 const server = app.listen(SERVER_PORT, () => {
   console.log(`Server is listening on : ${SERVER_PORT}`);
