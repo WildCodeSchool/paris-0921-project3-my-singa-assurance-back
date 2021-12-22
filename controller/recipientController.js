@@ -8,7 +8,7 @@ const {
   validate,
 } = require('../model/recipientModel');
 
-const { UnAuthorizedError, ConflictError } = require('../error-types');
+const { BadRequestsError, ConflictError } = require('../error-types');
 
 const getMany = async (req, res) => {
   const result = await getAllRecipients();
@@ -22,7 +22,7 @@ const getOneById = async (req, res) => {
 
 const postOne = async (req, res) => {
   const validatingError = validate(req.body);
-  if (validatingError) throw new UnAuthorizedError();
+  if (validatingError) throw new BadRequestsError();
 
   const existingEmail = await getOneRecipientByEmail(req.body.email);
   if (existingEmail) throw new ConflictError();
