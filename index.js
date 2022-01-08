@@ -20,8 +20,8 @@ router(app);
 app.use(handleBadRequest);
 app.use(handleRecordNotFound);
 app.use(handleUnAuthorized);
-app.use(handleInternalError);
 app.use(handleConflict);
+app.use(handleInternalError);
 
 const server = app.listen(SERVER_PORT, () => {
   console.log(`Server is listening on : ${SERVER_PORT}`);
