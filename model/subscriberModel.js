@@ -36,12 +36,12 @@ const validate = (data, forCreation = true) => {
   }).validate(data, { abortEarly: false }).error;
 };
 
-const getAllSubscribors = async () => {
+const getAllSubscribers = async () => {
   const allSubscribers = await prisma.subscribor.findMany();
   return allSubscribers;
 };
 
-const getOneSubscriborById = async (id) => {
+const getOneSubscriberById = async (id) => {
   const subscriber = await prisma.subscribor.findUnique({
     where: {
       Subscribor_id: Number(id),
@@ -50,7 +50,7 @@ const getOneSubscriborById = async (id) => {
   return subscriber;
 };
 
-const getOneSubscriborByEmail = async (email) => {
+const getOneSubscriberByEmail = async (email) => {
   const subscriber = await prisma.subscribor.findUnique({
     where: {
       email: email,
@@ -59,7 +59,7 @@ const getOneSubscriborByEmail = async (email) => {
   return subscriber;
 };
 
-const createSubscribors = async (body) => {
+const createSubscribers = async (body) => {
   body.password = await hashPassword(body.password);
   const result = await prisma.subscribor.create({
     data: {
@@ -69,7 +69,7 @@ const createSubscribors = async (body) => {
   return result;
 };
 
-const updateSubscribors = async (body, id) => {
+const updateSubscribers = async (body, id) => {
   const result = await prisma.subscribor.update({
     where: { Subscribor_id: Number(id) },
     data: {
@@ -79,7 +79,7 @@ const updateSubscribors = async (body, id) => {
   return result;
 };
 
-const deleteSubscribors = async (id) => {
+const deleteSubscribers = async (id) => {
   const result = await prisma.subscribor.delete({
     where: { Subscribor_id: Number(id) },
   });
@@ -87,11 +87,11 @@ const deleteSubscribors = async (id) => {
 };
 
 module.exports = {
-  getAllSubscribors,
-  getOneSubscriborByEmail,
-  getOneSubscriborById,
-  createSubscribors,
-  updateSubscribors,
-  deleteSubscribors,
+  getAllSubscribers,
+  getOneSubscriberByEmail,
+  getOneSubscriberById,
+  createSubscribers,
+  updateSubscribers,
+  deleteSubscribers,
   validate,
 };
