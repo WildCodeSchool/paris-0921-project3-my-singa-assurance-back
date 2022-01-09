@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+
 const { router } = require('./route');
 const { SERVER_PORT } = require('./env');
 
@@ -9,11 +12,29 @@ const handleUnAuthorized = require('./middleware/handleUnAuthorized');
 const handleInternalError = require('./middleware/handleInternalError');
 const handleConflict = require('./middleware/handleConflict');
 
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Singa Express API',
+      version: '0.1.0',
+      description: 'CRUD API to manage subscriptions and recipients for Singa Assurance',
+    },
+    servers: [
+      {
+        url: 'http://localhost:8080/subscribers',
+      },
+    ],
+  },
+  apis: ['./route/subscriberRouter.js'],
+};
+
 const app = express();
 
 app.use(cors('*'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(options)));
 
 router(app);
 
