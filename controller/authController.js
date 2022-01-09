@@ -2,10 +2,10 @@ const argon = require('argon2');
 const jwt = require('jsonwebtoken');
 
 const { UnAuthorizedError } = require('../error-types');
-const { getOneSubscriborByEmail } = require('../model/subscriberModel');
+const { getOneSubscriberByEmail } = require('../model/subscriberModel');
 
 const logIn = async (req, res) => {
-  const user = await getOneSubscriborByEmail(req.body.email);
+  const user = await getOneSubscriberByEmail(req.body.email);
   const isValid = await verifyPassword(user.password, req.body.password);
   if (isValid) {
     const token = createToken(user);
@@ -35,7 +35,7 @@ const createToken = (body) => {
         birthDate: body.birth_date,
       },
     },
-    'PetitPandaDanslesChamps',
+    process.env.TOKEN_SECRET,
     { algorithm: 'HS256' },
   );
   return token;

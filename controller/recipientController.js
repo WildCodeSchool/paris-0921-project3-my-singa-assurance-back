@@ -22,7 +22,7 @@ const getOneById = async (req, res) => {
 
 const postOne = async (req, res) => {
   const validatingError = validate(req.body);
-  if (validatingError) throw new BadRequestsError();
+  if (validatingError) throw new BadRequestsError(validatingError.message);
 
   const existingEmail = await getOneRecipientByEmail(req.body.email);
   if (existingEmail) throw new ConflictError();

@@ -1,43 +1,43 @@
 const {
-  getAllSubscribors,
-  getOneSubscriborById,
-  getOneSubscriborByEmail,
-  createSubscribors,
-  updateSubscribors,
-  deleteSubscribors,
+  getAllSubscribers,
+  getOneSubscriberById,
+  getOneSubscriberByEmail,
+  createSubscribers,
+  updateSubscribers,
+  deleteSubscribers,
   validate,
 } = require('../model/subscriberModel');
 
 const { BadRequestsError, ConflictError } = require('../error-types');
 
 const getMany = async (req, res) => {
-  const result = await getAllSubscribors();
+  const result = await getAllSubscribers();
   res.status(200).json(result);
 };
 
 const getOneById = async (req, res) => {
-  const result = await getOneSubscriborById(req.params.id);
+  const result = await getOneSubscriberById(req.params.id);
   res.status(200).json(result);
 };
 
 const postOne = async (req, res) => {
   const validatingError = validate(req.body);
-  if (validatingError) throw new BadRequestsError();
+  if (validatingError) throw new BadRequestsError(validatingError.message);
 
-  const existingEmail = await getOneSubscriborByEmail(req.body.email);
+  const existingEmail = await getOneSubscriberByEmail(req.body.email);
   if (existingEmail) throw new ConflictError();
 
-  const result = await createSubscribors(req.body);
+  const result = await createSubscribers(req.body);
   res.status(201).json(result);
 };
 
 const updateOne = async (req, res) => {
-  const result = await updateSubscribors(req.body, req.params.id);
+  const result = await updateSubscribers(req.body, req.params.id);
   res.status(200).json(result);
 };
 
 const deleteOne = async (req, res) => {
-  await deleteSubscribors(req.params.id);
+  await deleteSubscribers(req.params.id);
   res.status(204).send('Subscriber deleted');
 };
 
