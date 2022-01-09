@@ -28,7 +28,9 @@
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^11.0.0",
-    "mysql2": "^2.2.5"
+    "mysql2": "^2.2.5",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
     "eslint": "^7.23.0",
