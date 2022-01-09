@@ -3,6 +3,6 @@ const asyncHandler = require('express-async-handler');
 
 const authController = require('../controller/authController');
 
-router.post('/', asyncHandler(authController.logIn));
+router.post('/login', asyncHandler(authController.logIn));
 
 module.exports = router;
