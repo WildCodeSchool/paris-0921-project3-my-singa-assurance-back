@@ -20,7 +20,7 @@ const validate = (data, forCreation = true) => {
     last_name: Joi.string().max(255).presence(presence),
     living_country: Joi.string().max(255).presence(presence),
     nationality: Joi.string().max(255).presence(presence),
-    subscribor_family_relation: Joi.string().max(255).presence(presence),
+    subscriber_family_relation: Joi.string().max(255).presence(presence),
     phone_number: Joi.string()
       .length(10)
       .pattern(/^[0-9]+$/)
@@ -34,8 +34,8 @@ const validate = (data, forCreation = true) => {
     recipient_qualification: Joi.string().max(255).presence(presence),
     password: Joi.string().min(8).max(255).presence(presence),
     address: Joi.string().max(255).presence(presence),
-    Postal_code: Joi.number().integer().presence(presence),
-    City: Joi.string().max(255).presence(presence),
+    postal_code: Joi.number().integer().presence(presence),
+    city: Joi.string().max(255).presence(presence),
   }).validate(data, { abortEarly: false }).error;
 };
 
