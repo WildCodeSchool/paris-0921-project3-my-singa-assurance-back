@@ -1,16 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
-const argon = require('argon2');
 
 const prisma = new PrismaClient();
-
-const hashPassword = async (password) => {
-  try {
-    const hashedPassword = await argon.hash(password);
-    return hashedPassword;
-  } catch (err) {
-    throw new Error(err.message);
-  }
-};
 
 const getAllRecipients = async () => {
   const allRecipients = await prisma.recipient.findMany();
@@ -36,7 +26,6 @@ const getOneRecipientByEmail = async (email) => {
 };
 
 const createRecipients = async (body) => {
-  body.password = await hashPassword(body.password);
   const result = await prisma.recipient.create({
     data: {
       ...body,
