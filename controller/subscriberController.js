@@ -5,8 +5,8 @@ const {
   createSubscribers,
   updateSubscribers,
   deleteSubscribers,
-  validate,
 } = require('../model/subscriberModel');
+const Joi = require('joi').extend(require('@joi/date'));
 
 const { BadRequestsError, ConflictError } = require('../error-types');
 
@@ -21,8 +21,19 @@ const getOneById = async (req, res) => {
 };
 
 const postOne = async (req, res) => {
-  const validatingError = validate(req.body);
-  if (validatingError) throw new BadRequestsError(validatingError.message);
+  const { first_name, last_name, email, password, create_date } = req.body;
+  const { error } = Joi.object({
+    first_name: Joi.string().max(255).required(),
+    last_name: Joi.string().max(255).required(),
+    email: Joi.string().email().max(255).required(),
+    password: Joi.string()
+      .pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'))
+      .max(255)
+      .error(new Error('Le mot de passe doit contenir au minimum 8 caractères, une lettre, un chiffre et un caractère spécial')),
+    create_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').required(),
+  }).validate({ first_name, last_name, email, password, create_date }, { abortEarly: false });
+
+  if (error) throw new BadRequestsError(error.message);
 
   const existingEmail = await getOneSubscriberByEmail(req.body.email);
   if (existingEmail) throw new ConflictError();
@@ -32,6 +43,29 @@ const postOne = async (req, res) => {
 };
 
 const updateOne = async (req, res) => {
+  const { error } = Joi.object({
+    first_name: Joi.string().max(255),
+    last_name: Joi.string().max(255),
+    email: Joi.string().email().max(255),
+    birth_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ'),
+    password: Joi.string()
+      .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$'))
+      .max(255)
+      .error(new Error('Le mot de passe doit contenir au minimum 8 caractères, une lettre, un chiffre et un caractère spécial')),
+    living_country: Joi.string().max(255),
+    nationality: Joi.string().max(255),
+    address: Joi.string().max(255),
+    postal_code: Joi.number().integer(),
+    city: Joi.string().max(255),
+    phone_number: Joi.string()
+      .length(10)
+      .pattern(/^[0-9]+$/),
+    marital_status: Joi.string().max(255),
+    last_update: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').required(),
+  }).validate({ ...req.body }, { abortEarly: false });
+
+  if (error) throw new BadRequestsError(error.message);
+
   const result = await updateSubscribers(req.body, req.params.id);
   res.status(200).json(result);
 };
