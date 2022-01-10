@@ -1,15 +1,10 @@
-const { getAllRecipients, getOneRecipientById, createRecipients, updateRecipients, deleteRecipients } = require('../model/recipientModel');
+const { getAllRecipientBySubscriberId, createRecipients, updateRecipients, deleteRecipients } = require('../model/recipientModel');
 const Joi = require('joi').extend(require('@joi/date'));
 
 const { BadRequestsError } = require('../error-types');
 
 const getMany = async (req, res) => {
-  const result = await getAllRecipients();
-  res.status(200).json(result);
-};
-
-const getOneById = async (req, res) => {
-  const result = await getOneRecipientById(req.params.id);
+  const result = await getAllRecipientBySubscriberId(req.params.id);
   res.status(200).json(result);
 };
 
@@ -96,7 +91,6 @@ const deleteOne = async (req, res) => {
 
 module.exports = {
   getMany,
-  getOneById,
   postOne,
   updateOne,
   deleteOne,
