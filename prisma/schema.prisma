@@ -22,7 +22,7 @@ model recipient {
   living_country             String                  @db.VarChar(255)
   nationality                String?                 @db.VarChar(255)
   subscriber_family_relation String                  @db.VarChar(255)
-  phone_number               Int                     @unique(map: "phone_number_UNIQUE") @db.UnsignedInt
+  phone_number               String?                 @unique(map: "phone_number_UNIQUE") @db.VarChar(45)
   marital_status             String?                 @db.VarChar(255)
   birth_date                 DateTime                @db.Date
   Sex                        String?                 @db.VarChar(15)
