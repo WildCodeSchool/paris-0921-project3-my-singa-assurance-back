@@ -27,7 +27,7 @@ const postOne = async (req, res) => {
     last_name: Joi.string().max(255).required(),
     email: Joi.string().email().max(255).required(),
     password: Joi.string()
-      .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$'))
+      .pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'))
       .max(255)
       .error(new Error('Le mot de passe doit contenir au minimum 8 caractères, une lettre, un chiffre et un caractère spécial')),
     create_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').required(),
