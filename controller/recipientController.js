@@ -1,14 +1,7 @@
-const {
-  getAllRecipients,
-  getOneRecipientByEmail,
-  getOneRecipientById,
-  createRecipients,
-  updateRecipients,
-  deleteRecipients,
-} = require('../model/recipientModel');
+const { getAllRecipients, getOneRecipientById, createRecipients, updateRecipients, deleteRecipients } = require('../model/recipientModel');
 const Joi = require('joi').extend(require('@joi/date'));
 
-const { BadRequestsError, ConflictError } = require('../error-types');
+const { BadRequestsError } = require('../error-types');
 
 const getMany = async (req, res) => {
   const result = await getAllRecipients();
@@ -38,8 +31,12 @@ const postOne = async (req, res) => {
     last_name: Joi.string().max(255).required(),
     birth_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').required(),
     living_country: Joi.string().max(255).required(),
+    phone_number: Joi.string()
+      .length(10)
+      .pattern(/^[0-9]+$/)
+      .required(),
     subscriber_family_relation: Joi.string().max(100).required(),
-    adress: Joi.string().max(255).required(),
+    address: Joi.string().max(255).required(),
     city: Joi.string().max(255).required(),
     subscriber_subscriber_id: Joi.number().integer().required(),
     create_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').required(),
@@ -60,9 +57,6 @@ const postOne = async (req, res) => {
   );
   if (error) throw new BadRequestsError(error.message);
 
-  const existingEmail = await getOneRecipientByEmail(req.body.email);
-  if (existingEmail) throw new ConflictError();
-
   const result = await createRecipients(req.body);
   res.status(201).json(result);
 };
@@ -79,6 +73,7 @@ const updateOne = async (req, res) => {
       .pattern(/^[0-9]+$/),
     marital_status: Joi.string().max(100),
     sex: Joi.string().max(15),
+    active: Joi.boolean(),
     recipient_qualification: Joi.string().max(100),
     living_country: Joi.string().max(255),
     subscriber_family_relation: Joi.string().max(100),
