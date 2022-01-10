@@ -2,27 +2,13 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-const getAllRecipients = async () => {
-  const allRecipients = await prisma.recipient.findMany();
-  return allRecipients;
-};
-
-const getOneRecipientById = async (id) => {
-  const recipient = await prisma.recipient.findUnique({
+const getAllRecipientBySubscriberId = async (id) => {
+  const recipients = await prisma.recipient.findMany({
     where: {
-      recipient_id: Number(id),
+      subscriber_subscriber_id: Number(id),
     },
   });
-  return recipient;
-};
-
-const getOneRecipientByEmail = async (email) => {
-  const recipient = await prisma.recipient.findUnique({
-    where: {
-      email: email,
-    },
-  });
-  return recipient;
+  return recipients;
 };
 
 const createRecipients = async (body) => {
@@ -52,9 +38,7 @@ const deleteRecipients = async (id) => {
 };
 
 module.exports = {
-  getAllRecipients,
-  getOneRecipientByEmail,
-  getOneRecipientById,
+  getAllRecipientBySubscriberId,
   createRecipients,
   updateRecipients,
   deleteRecipients,
