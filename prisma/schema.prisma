@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model formule {
+  formule_id             Int                      @id @unique(map: "formule_id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  formule_name           String                   @unique(map: "forumule_name_UNIQUE") @db.VarChar(45)
+  formule_details        String                   @db.VarChar(250)
+  recipient_has_formule  recipient_has_formule[]
+  subscriber_has_formule subscriber_has_formule[]
+}
+
+model recipient {
+  recipient_id               Int                     @id @unique(map: "recipient_id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  first_name                 String                  @db.VarChar(255)
+  last_name                  String                  @db.VarChar(255)
+  living_country             String                  @db.VarChar(255)
+  nationality                String?                 @db.VarChar(255)
+  subscriber_family_relation String                  @db.VarChar(255)
+  phone_number               String?                 @unique(map: "phone_number_UNIQUE") @db.VarChar(45)
+  marital_status             String?                 @db.VarChar(255)
+  birth_date                 DateTime                @db.Date
+  Sex                        String?                 @db.VarChar(15)
+  email                      String?                 @unique(map: "email_UNIQUE") @db.VarChar(255)
+  create_date                DateTime                @db.DateTime(0)
+  last_update                DateTime?               @db.DateTime(0)
+  active                     Int?                    @db.TinyInt
+  recipient_qualification    String?                 @db.VarChar(255)
+  password                   String?                 @db.VarChar(255)
+  address                    String                  @db.VarChar(255)
+  postal_code                Int?                    @db.UnsignedInt
+  city                       String                  @db.VarChar(255)
+  subscriber_subscriber_id   Int                     @db.UnsignedInt
+  subscriber                 subscriber              @relation(fields: [subscriber_subscriber_id], references: [subscriber_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_recipient_subscriber1")
+  recipient_has_formule      recipient_has_formule[]
+
+  @@index([subscriber_subscriber_id], map: "fk_recipient_subscriber1_idx")
+}
+
+model recipient_has_formule {
+  recipient_recipient_id Int       @db.UnsignedInt
+  formule_formule_id     Int       @db.UnsignedInt
+  formule                formule   @relation(fields: [formule_formule_id], references: [formule_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_recipient_has_formule_formule1")
+  recipient              recipient @relation(fields: [recipient_recipient_id], references: [recipient_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_recipient_has_formule_recipient1")
+
+  @@id([recipient_recipient_id, formule_formule_id])
+  @@index([formule_formule_id], map: "fk_recipient_has_formule_formule1_idx")
+  @@index([recipient_recipient_id], map: "fk_recipient_has_formule_recipient1_idx")
+}
+
+model subscriber {
+  subscriber_id          Int                      @id @unique(map: "Subscribor_id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  email                  String                   @unique(map: "email_UNIQUE") @db.VarChar(255)
+  first_name             String                   @db.VarChar(255)
+  last_name              String                   @db.VarChar(255)
+  birth_date             DateTime?                @db.Date
+  living_country         String?                  @db.VarChar(255)
+  nationality            String?                  @db.VarChar(255)
+  address                String?                  @db.VarChar(255)
+  postal_code            Int?                     @db.UnsignedInt
+  city                   String?                  @db.VarChar(255)
+  phone_number           String?                  @db.VarChar(45)
+  marital_status         String?                  @db.VarChar(255)
+  create_date            DateTime                 @db.DateTime(0)
+  last_update            DateTime?                @db.DateTime(0)
+  password               String                   @db.VarChar(255)
+  recipient              recipient[]
+  subscriber_has_formule subscriber_has_formule[]
+}
+
+model subscriber_has_formule {
+  subscriber_subscriber_id Int        @db.UnsignedInt
+  formule_formule_id       Int        @db.UnsignedInt
+  formule                  formule    @relation(fields: [formule_formule_id], references: [formule_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriber_has_formule_formule1")
+  subscriber               subscriber @relation(fields: [subscriber_subscriber_id], references: [subscriber_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriber_has_formule_subscriber1")
+
+  @@id([subscriber_subscriber_id, formule_formule_id])
+  @@index([formule_formule_id], map: "fk_subscriber_has_formule_formule1_idx")
+  @@index([subscriber_subscriber_id], map: "fk_subscriber_has_formule_subscriber1_idx")
+}
