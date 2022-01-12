@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
-const subscriberOption = require('../controller/optionController');
+const optionController = require('../controller/optionController');
 
-router.get('/', subscriberOption.getMany);
+router.get('/', optionController.getMany);
 
 module.exports = router;
