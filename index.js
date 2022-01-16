@@ -14,19 +14,29 @@ const handleConflict = require('./middleware/handleConflict');
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: '3.0.1',
     info: {
       title: 'Singa Express API',
       version: '0.1.0',
       description: 'CRUD API to manage subscriptions and recipients for Singa Assurance',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          name: 'Authorization',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
     servers: [
       {
-        url: 'http://localhost:8080/subscribers',
+        url: 'http://localhost:8080/',
       },
     ],
   },
-  apis: ['./route/subscriberRouter.js'],
+  apis: ['./route/*.js'],
 };
 
 const app = express();
