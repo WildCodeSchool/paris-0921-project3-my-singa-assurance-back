@@ -51,6 +51,13 @@ const subscriberController = require('../controller/subscriberController');
  *    get:
  *      summary: Return all subscibers
  *      tags: [Subscriber]
+ *      security:
+ *        - bearerAuth: []
+ *      consumes:
+ *        - application/json
+ *      produces:
+ *        - application/json
+ *      parameters:
  *      responses:
  *        200:
  *          description: The list of all subscribers
