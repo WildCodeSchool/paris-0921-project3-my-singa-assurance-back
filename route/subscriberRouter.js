@@ -47,10 +47,38 @@ const subscriberController = require('../controller/subscriberController');
 
 /**
  * @swagger
- *  /:
+ *  /subscribers:
  *    get:
- *      summary: Return all subscibers
  *      tags: [Subscriber]
+ *      name: Get all subscribers
+ *      summary: Return all subscibers
+ *      security:
+ *        - bearerAuth: []
+ *      consumes:
+ *        - application/json
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        200:
+ *          description: The list of all subscribers
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                items:
+ *                  $ref: '#/components/schemas/Subscriber'
+ *        401:
+ *          description: Unauthorized, you need a valid token and right access.
+ */
+router.get('/', asyncHandler(subscriberController.getMany));
+
+/**
+ * @swagger
+ *  /subscribers/{id}:
+ *    get:
+ *      tags: [Subscriber]
+ *      name: Get a subscriber by id
+ *      summary: Return a subscriber by id
  *      security:
  *        - bearerAuth: []
  *      consumes:
@@ -58,6 +86,8 @@ const subscriberController = require('../controller/subscriberController');
  *      produces:
  *        - application/json
  *      parameters:
+ *        - name: id
+ *        - in: path
  *      responses:
  *        200:
  *          description: The list of all subscribers
@@ -68,7 +98,6 @@ const subscriberController = require('../controller/subscriberController');
  *                items:
  *                  $ref: '#/components/schemas/Subscriber'
  */
-router.get('/', asyncHandler(subscriberController.getMany));
 router.get('/:id', asyncHandler(subscriberController.getOneById));
 router.put('/:id', asyncHandler(subscriberController.updateOne));
 router.delete('/:id', asyncHandler(subscriberController.deleteOne));
