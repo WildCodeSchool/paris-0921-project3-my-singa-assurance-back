@@ -2,7 +2,7 @@ const argon = require('argon2');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi').extend(require('@joi/date'));
 
-const { UnAuthorizedError, BadRequestsError, ConflictError } = require('../error-types');
+const { UnAuthorizedError, BadRequestsError, ConflictError, NotFoundError } = require('../error-types');
 const { getOneSubscriberByEmail, createSubscribers } = require('../model/subscriberModel');
 
 const logIn = async (req, res) => {
@@ -14,6 +14,12 @@ const logIn = async (req, res) => {
   } else {
     throw new UnAuthorizedError();
   }
+};
+
+const checkIfEmailExists = async (req, res) => {
+  const result = await getOneSubscriberByEmail(req.body.email);
+  if (result === null) throw new NotFoundError('Email not found');
+  res.status(200).json(result);
 };
 
 const register = async (req, res) => {
@@ -81,4 +87,5 @@ module.exports = {
   logIn,
   register,
   checkCredentials,
+  checkIfEmailExists,
 };

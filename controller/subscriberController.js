@@ -20,7 +20,7 @@ const updateOne = async (req, res) => {
     email: Joi.string().email().max(255),
     birth_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ'),
     password: Joi.string()
-      .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$'))
+      .pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'))
       .max(255)
       .error(new Error('Le mot de passe doit contenir au minimum 8 caractères, une lettre, un chiffre et un caractère spécial')),
     living_country: Joi.string().max(255),
