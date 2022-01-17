@@ -17,7 +17,7 @@ const logIn = async (req, res) => {
 };
 
 const checkIfEmailExists = async (req, res) => {
-  const result = await getOneSubscriberByEmail(req.body.email);
+  const result = await getOneSubscriberByEmail(req.params.email);
   if (result === null) throw new NotFoundError('Email not found');
   res.status(200).json(result);
 };
