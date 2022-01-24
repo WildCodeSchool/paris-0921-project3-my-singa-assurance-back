@@ -18,7 +18,7 @@ const logIn = async (req, res) => {
 
 const checkIfEmailExists = async (req, res) => {
   const result = await getOneSubscriberByEmail(req.params.email);
-  if (result === null) res.status(204).send('ok email unknown');
+  if (result === null) res.status(204).send(`L'email n'existe pas`);
   else res.status(200).json(result);
 };
 
