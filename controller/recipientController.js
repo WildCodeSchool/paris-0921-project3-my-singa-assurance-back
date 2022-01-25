@@ -9,27 +9,13 @@ const getMany = async (req, res) => {
 };
 
 const postOne = async (req, res) => {
-  const {
-    first_name,
-    last_name,
-    living_country,
-    subscriber_family_relation,
-    phone_number,
-    birth_date,
-    address,
-    city,
-    subscriber_subscriber_id,
-    create_date,
-  } = req.body;
+  const { first_name, last_name, living_country, subscriber_family_relation, birth_date, address, city, subscriber_subscriber_id, create_date } =
+    req.body;
   const { error } = Joi.object({
     first_name: Joi.string().max(255).required(),
     last_name: Joi.string().max(255).required(),
     birth_date: Joi.date().format('YYYY-MM-DDTHH:mm:ssZ').required(),
     living_country: Joi.string().max(255).required(),
-    phone_number: Joi.string()
-      .length(10)
-      .pattern(/^[0-9]+$/)
-      .required(),
     subscriber_family_relation: Joi.string().max(100).required(),
     address: Joi.string().max(255).required(),
     city: Joi.string().max(255).required(),
@@ -41,7 +27,6 @@ const postOne = async (req, res) => {
       last_name,
       living_country,
       subscriber_family_relation,
-      phone_number,
       birth_date,
       address,
       city,
