@@ -60,7 +60,7 @@ const subscriberController = require('../controller/subscriberController');
  *        - application/json
  *      responses:
  *        200:
- *          description: The list of all subscribers
+ *          description: Retrieve the list of all subscribers
  *          content:
  *            application/json:
  *              schema:
@@ -86,11 +86,47 @@ router.get('/', asyncHandler(subscriberController.getMany));
  *      produces:
  *        - application/json
  *      parameters:
- *        - name: id
  *        - in: path
+ *          name: id
+ *          schema:
+ *            type: number
+ *          required: true
  *      responses:
  *        200:
- *          description: The list of all subscribers
+ *          description: Retrieve the targeted subscriber's informations
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                items:
+ *                  $ref: '#/components/schemas/Subscriber'
+ *        401:
+ *          description: Unauthorized, you need a valid token and right access.
+ */
+router.get('/:id', asyncHandler(subscriberController.getOneById));
+
+/**
+ * @swagger
+ *  /subscribers/{id}:
+ *    put:
+ *      tags: [Subscriber]
+ *      name: Update subscriber by id
+ *      summary: Update one or multiple data of a subscriber
+ *      security:
+ *        - bearerAuth: []
+ *      consumes:
+ *        - application/json
+ *      produces:
+ *        - application/json
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: number
+ *          required: true
+ *      responses:
+ *        200:
+ *          description: Targeted data succesfully updated
  *          content:
  *            application/json:
  *              schema:
@@ -98,7 +134,6 @@ router.get('/', asyncHandler(subscriberController.getMany));
  *                items:
  *                  $ref: '#/components/schemas/Subscriber'
  */
-router.get('/:id', asyncHandler(subscriberController.getOneById));
 router.put('/:id', asyncHandler(subscriberController.updateOne));
 router.delete('/:id', asyncHandler(subscriberController.deleteOne));
 
