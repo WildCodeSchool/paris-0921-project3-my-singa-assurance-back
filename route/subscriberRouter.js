@@ -133,8 +133,36 @@ router.get('/:id', asyncHandler(subscriberController.getOneById));
  *                type: array
  *                items:
  *                  $ref: '#/components/schemas/Subscriber'
+ *        401:
+ *          description: Unauthorized, you need a valid token and right access.
  */
 router.put('/:id', asyncHandler(subscriberController.updateOne));
+
+/**
+ * @swagger
+ *  /subscribers/{id}:
+ *    delete:
+ *      tags: [Subscriber]
+ *      name: Delete a subscriber by id
+ *      summary: Delete whole data of a subscriber from database
+ *      security:
+ *        - bearerAuth: []
+ *      consumes:
+ *        - application/json
+ *      produces:
+ *        - application/json
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: number
+ *          required: true
+ *      responses:
+ *        204:
+ *          description: Subscriber deleted, no content returned
+ *        401:
+ *          description: Unauthorized, you need a valid token and right access.
+ */
 router.delete('/:id', asyncHandler(subscriberController.deleteOne));
 
 module.exports = router;
