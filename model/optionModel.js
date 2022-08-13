@@ -3,8 +3,8 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const getAllOptions = async () => {
-  const allSubscribers = await prisma.formule.findMany();
-  return allSubscribers;
+  const allOptions = await prisma.formule.findMany();
+  return allOptions;
 };
 
 module.exports = {
